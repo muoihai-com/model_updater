@@ -8,18 +8,29 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'model_updater'
+gem "model_updater", git: "https://github.com/muoihai-com/model_updater.git"
 ```
 
 And then execute:
 ```bash
-$ bundle
+$ bundle install
 ```
 
-Or install it yourself as:
+Run the following code to create the config file:
+
 ```bash
-$ gem install model_updater
+rake model_updater:install # It will create file config/initializers/model_updater.rb
 ```
+
+Add the following to your `config/routes.rb`:
+
+```ruby
+Rails.application.routes.draw do
+  mount ModelUpdater::Engine => "/updater" unless Rails.env.production?
+  ...
+end
+```
+
 
 ## Contributing
 Contribution directions go here.
