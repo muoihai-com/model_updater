@@ -1,0 +1,88 @@
+<% if flash[:record] %>
+  <pre style="white-space: pre-wrap;">
+    <%= flash[:record] %>
+  </pre>
+
+  <ul>
+    <% flash[:errors].each do |message| %>
+      <li>
+        <%= message %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<p>
+<%= select_tag "klass", options_for_select(@model_names.sort, params[:klass]), prompt: "Select a model", id: 'select-klass' %>
+</p>
+<p>
+or
+</p>
+<p>
+<%= text_field_tag "klass", params[:klass], placeholder: "Type here...", id: 'input-klass' %>
+</p>
+<% if params[:klass].present? %>
+  <p>
+  find by <%= text_field_tag "attribute", params[:attribute] || 'id', placeholder: "Id, Email,..." %>
+  </p>
+  <p>
+  with value <%= text_field_tag "value", params[:value], placeholder: "value..." %>
+  </p>
+  <p>
+    <button id="find">Find</button>
+  </p>
+<% end %>
+
+<% if @record.present? %>
+  <pre style="white-space: pre-wrap;">
+    <%= @record.inspect %>
+  </pre>
+
+  <%= form_tag(update_path) do -%>
+    <%= hidden_field_tag "klass", params[:klass] %>
+    <%= hidden_field_tag "attribute", params[:attribute] %>
+    <%= hidden_field_tag "value", params[:value] %>
+
+    <p>
+    Update <%= select_tag "column", options_for_select(@column_names.sort, params[:column]), prompt: "Select a column" %>
+    </p>
+    <p>
+    with value <%= text_field_tag "update_value", @update_value, placeholder: "value..." %>
+    </p>
+
+    <div><%= submit_tag 'save' %></div>
+  <% end -%>
+<% end %>
+
+
+
+<script>
+  function selectClassChange(e) {
+    const value = e.target.value
+
+    window.location.href = `${window.location.origin}${window.location.pathname}?klass=${value}`
+  }
+
+  function findBy() {
+    const attribute = document.getElementById('attribute').value
+    const value = document.getElementById('value').value
+
+    const search = new URLSearchParams(window.location.search)
+    search.set('attribute', attribute)
+    search.set('value', value)
+    window.location.href = `${window.location.origin}${window.location.pathname}?${search}`
+  }
+  
+  function selectColumn(e) {
+    const search = new URLSearchParams(window.location.search)
+    search.set('column', e.target.value)
+    window.location.href = `${window.location.origin}${window.location.pathname}?${search}`
+  }
+
+  document.addEventListener('DOMContentLoaded', function(event) {
+    document.getElementById('select-klass').addEventListener('change', selectClassChange)
+    document.getElementById('input-klass').addEventListener('change', selectClassChange)
+    document.getElementById('find').addEventListener('click', findBy)
+    document.getElementById('column').addEventListener('change', selectColumn)
+  });
+</script>
