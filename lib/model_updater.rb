@@ -1,6 +1,8 @@
-require 'model_updater/version'
-require 'model_updater/engine'
-require 'model_updater/diploma'
+# frozen_string_literal: true
+
+Dir.glob("#{__dir__}/model_updater/*.rb").sort.each do |file|
+  require file
+end
 
 module ModelUpdater
   mattr_accessor :valid_models

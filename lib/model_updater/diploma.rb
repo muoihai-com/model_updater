@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ModelUpdater
   class Diploma
     class << self
@@ -10,7 +12,7 @@ module ModelUpdater
       def model(name)
         klass = Object.const_get(name)
         if ModelUpdater.valid_models.empty? || ModelUpdater.valid_models.include?(klass.name)
-          return Model::Proxy.new(klass)
+          return ModelUpdater::Proxy.new(klass)
         end
 
         raise ModelUpdater::InvalidModel, 'Invalid model'

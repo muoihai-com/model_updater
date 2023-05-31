@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module ModelUpdater
   class Proxy
     attr_reader :klass
 
-    def initializer(klass)
+    def initialize(klass)
       @klass = klass
     end
 
