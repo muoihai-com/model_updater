@@ -17,6 +17,12 @@ module ModelUpdater
       redirect_to root_path
     end
 
+    def manual_update
+      @model_names = ModelUpdater::Diploma.models
+    end
+
+    def scripts; end
+
     private
 
     def load_model

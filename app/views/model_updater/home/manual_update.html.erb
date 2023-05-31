@@ -1,0 +1,51 @@
+<div class="content">
+  <form class="pure-form">
+    <p>
+      <%= select_tag "klass", options_for_select(@model_names.sort, params[:klass]), prompt: "Select a model", id: 'select-klass' %>
+      or
+      <%= text_field_tag "klass", params[:klass], placeholder: "Type here...", id: 'input-klass' %>
+    </p>
+
+    <% if params[:klass].present? %>
+      <p>
+      find by <%= text_field_tag "attribute", params[:attribute] || 'id', placeholder: "Id, Email,..." %>
+      </p>
+      <p>
+      with value <%= text_field_tag "value", params[:value], placeholder: "value..." %>
+      </p>
+      <p>
+        <button id="find">Find</button>
+      </p>
+    <% end %>
+
+  </form>
+</div>
+
+<script>
+  function selectClassChange(e) {
+    const value = e.target.value
+
+    window.location.href = `${window.location.origin}${window.location.pathname}?klass=${value}`
+  }
+
+  function findBy() {
+    const attribute = document.getElementById('attribute').value
+    const value = document.getElementById('value').value
+
+    const search = new URLSearchParams(window.location.search)
+    search.set('attribute', attribute)
+    search.set('value', value)
+    window.location.href = `${window.location.origin}${window.location.pathname}?${search}`
+  }
+  
+  function selectColumn(e) {
+    const search = new URLSearchParams(window.location.search)
+    search.set('column', e.target.value)
+    window.location.href = `${window.location.origin}${window.location.pathname}?${search}`
+  }
+
+  document.addEventListener('DOMContentLoaded', function(event) {
+    document.getElementById('select-klass').addEventListener('change', selectClassChange)
+    document.getElementById('input-klass').addEventListener('change', selectClassChange)
+  });
+</script>

@@ -6,9 +6,7 @@ namespace :model_updater do
       # This is an example initializer for model_updater
 
       ModelUpdater.setup do |config|
-        config.current_user_sym = :current_user
-        config.valid_methods = %i[find_by]
-        config.valid_models = %w[User]
+        config.valid_models = %w[]
       end
     DOC
     File.write(initializer_file, content)
