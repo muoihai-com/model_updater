@@ -1,6 +1,7 @@
-require 'model_updater/version'
-require 'model_updater/engine'
-require 'model_updater/diploma'
+require "model_updater/version"
+require "model_updater/engine"
+require "model_updater/diploma"
+require "model_updater/proxy"
 
 module ModelUpdater
   mattr_accessor :valid_models

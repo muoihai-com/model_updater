@@ -2,20 +2,20 @@ module ModelUpdater
   class Proxy
     attr_reader :klass
 
-    def initializer(klass)
+    def initialize klass
       @klass = klass
     end
 
-    def column_names
-      klass.column_names
-    end
-
-    def respond_to_missing?(*args)
-      klass.respond_to_missing?(*args)
-    end
+    delegate :column_names, to: :klass
 
     def method_missing method, *args, &block
       klass.try(method, *args, &block)
+    end
+
+    private
+
+    def respond_to_missing? *args
+      klass.send(:respond_to_missing?, *args)
     end
   end
 end
