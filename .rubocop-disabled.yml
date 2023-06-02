@@ -1,0 +1,35 @@
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/ClassMethodsDefinitions:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Rails/ReflectionClassName:
+  Enabled: false
+
+Rails/BulkChangeTable:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Rails/RakeEnvironment:
+  Enabled: false

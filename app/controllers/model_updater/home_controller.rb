@@ -1,4 +1,4 @@
-require_dependency 'model_updater/application_controller'
+require_dependency "model_updater/application_controller"
 
 module ModelUpdater
   class HomeController < ApplicationController
@@ -9,12 +9,12 @@ module ModelUpdater
     end
 
     def update
-      @record.try(:update_column, params[:column], params[:update_value])
+      @record.assign_attributes user_params
+      @changes = @record.changes
+      @validate_error_flag = @record.valid?
+      @full_messages = @record.errors.full_messages
 
-      @record.valid?
-      flash[:record] = @record.inspect
-      flash[:errors] = @record.errors.full_messages
-      redirect_to root_path
+      render "update"
     end
 
     def manual_update
@@ -28,11 +28,10 @@ module ModelUpdater
     def load_model
       return if params[:klass].blank?
 
-      model = ModelUpdater::Diploma.model(params[:klass])
-      @proxy = ModelUpdater::Proxy.new(model)
+      @proxy = ModelUpdater::Diploma.model(params[:klass])
       return if @proxy.blank?
 
-      @column_names = @proxy.column_names - %w[id]
+      @column_names = @proxy.column_names
     end
 
     def load_record
@@ -45,6 +44,11 @@ module ModelUpdater
       return if params[:column].blank? || @record.try(params[:column]).blank?
 
       @update_value = @record.try(params[:column])
+    end
+
+    def user_params
+      params[:user].each_key{|key| params[:user].delete(key) if params[:user][key].blank?}
+      params[:user].as_json
     end
   end
 end

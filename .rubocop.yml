@@ -1,0 +1,145 @@
+require:
+  - rubocop-rails
+
+inherit_from:
+  - .rubocop-enabled.yml
+  - .rubocop-disabled.yml
+
+AllCops:
+  Exclude:
+    - config/environments/*.rb
+    - bin/*
+    - config/spring.rb
+    - config/application.rb
+    - config/boot.rb
+    - config/environment.rb
+    - config/puma.rb
+    - db/*.rb
+    - config.ru
+    - Gemfile.lock
+    - node_modules/**/*
+    - scripts/**/*
+    - frontend/**/*
+    - cop/*
+
+#  Ruby cops
+Layout/LineLength:
+  Max: 100
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Layout/SpaceInsideBlockBraces:
+  EnforcedStyle: no_space
+  SpaceBeforeBlockParameters: false
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Style/MethodDefParentheses:
+  EnforcedStyle: require_no_parentheses_except_multiline
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: ()
+    "%i": "[]"
+    "%I": "[]"
+    "%r": "{}"
+    "%w": "[]"
+    "%W": "[]"
+
+Style/HashAsLastArrayItem:
+  EnforcedStyle: no_braces
+
+Style/Lambda:
+  Exclude:
+    - config/deploy.rb
+    - config/deploy/*.rb
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+  Exclude:
+    - lib/capistrano/**/*.rake
+    - config/initializers/searchkick.rb
+
+Layout/SpaceBeforeBlockBraces:
+  EnforcedStyle: no_space
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Metrics/ClassLength:
+  Max: 400
+
+Metrics/MethodLength:
+  Max: 50
+  Exclude:
+    - db/**/*.rb
+
+Metrics/BlockLength:
+  Exclude:
+    - db/**/*.rb
+    - lib/**/*.rake
+    - scripts/**/*
+    - config/routes.rb
+    - config/initializers/**.rb
+    - spec/**/*.rb
+
+Metrics/ModuleLength:
+  Exclude:
+    - "**/search_decorator.rb"
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - scripts/**/*
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - scripts/**/*
+
+Layout/EmptyLinesAroundAccessModifier:
+  EnforcedStyle: around
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
+
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+#  Rails cops
+Rails/FilePath:
+  EnforcedStyle: arguments
+
+Rails/HttpStatus:
+  EnforcedStyle: numeric
+
+Rails/Present:
+  Exclude:
+    - scripts/**/*
+    - config/deploy.rb
+    - config/deploy/*.rb
+    - lib/capistrano/**/*
+    - lib/batch/*
+
+Rails/Output:
+  Exclude:
+    - lib/batch/**/*
+    - lib/capistrano/**/*
+
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - staging_beta
+    - staging
+    - awsdev
+    - development
+    - test

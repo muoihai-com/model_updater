@@ -72,6 +72,23 @@
       width: 100%;
       margin: auto;
     }
+
+    .width-full {
+      width: 100%;
+    }
+
+    .pure-table {
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .text-warning {
+      color: #ff8800;
+    }
+
+    .font-bold {
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -81,14 +98,14 @@
     <a class="pure-menu-heading" href="#">Model Updater</a>
 
     <ul class="pure-menu-list">
-      <li class="pure-menu-item pure-menu-selected">
+      <li class="pure-menu-item <%= path_active?(root_path) ? 'pure-menu-selected' : ''%>">
         <a href="#" class="pure-menu-link">Dashboard</a>
       </li>
-      <li class="pure-menu-item">
+      <li class="pure-menu-item <%= path_active?(scripts_path) ? 'pure-menu-selected' : ''%>">
         <a href="#" class="pure-menu-link">Scripts</a>
       </li>
-      <li class="pure-menu-item">
-        <a href="#" class="pure-menu-link">Manual Update</a>
+      <li class="pure-menu-item <%= path_active?(manual_update_path) ? 'pure-menu-selected' : ''%>">
+        <%= link_to 'Manual Update', manual_update_path, class: 'pure-menu-link' %>
       </li>
     </ul>
   </div>

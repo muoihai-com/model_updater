@@ -1,5 +1,5 @@
 <div class="content">
-  <form class="pure-form">
+  <%= form_tag update_path, class: 'pure-form' do %>
     <p>
       <%= select_tag "klass", options_for_select(@model_names.sort, params[:klass]), prompt: "Select a model", id: 'select-klass' %>
       or
@@ -14,11 +14,38 @@
       with value <%= text_field_tag "value", params[:value], placeholder: "value..." %>
       </p>
       <p>
-        <button id="find">Find</button>
+        <button class="pure-button pure-button-primary" id="find">Find</button>
       </p>
     <% end %>
 
-  </form>
+    <% if @record.present? %>
+      <table class="pure-table pure-table-horizontal width-full">
+        <thead>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @column_names.each do |col| %>
+              <tr>
+                <td><%= col %></td>
+                <td class="width-full"><%= @record.try(col) %></td>
+                <td><%= text_field_tag "user[#{col}]", nil %></td>
+              </tr>
+            <% end %>
+        </tbody>
+      </table>
+
+      <div>
+        <p class="text-warning font-bold">
+          Please be aware that: These updates will skip the validation of the record and may potentially cause data errors.
+        </p>
+        <%= submit_tag "Save", class: "pure-button pure-button-primary" %>
+      </div>
+    <% end %>
+  <% end %>
 </div>
 
 <script>
@@ -28,24 +55,22 @@
     window.location.href = `${window.location.origin}${window.location.pathname}?klass=${value}`
   }
 
-  function findBy() {
+  function findBy(e) {
+    e.preventDefault()
+
     const attribute = document.getElementById('attribute').value
     const value = document.getElementById('value').value
 
-    const search = new URLSearchParams(window.location.search)
+    const search = new URLSearchParams()
+    search.set('klass', '<%= params[:klass] %>')
     search.set('attribute', attribute)
     search.set('value', value)
-    window.location.href = `${window.location.origin}${window.location.pathname}?${search}`
-  }
-  
-  function selectColumn(e) {
-    const search = new URLSearchParams(window.location.search)
-    search.set('column', e.target.value)
     window.location.href = `${window.location.origin}${window.location.pathname}?${search}`
   }
 
   document.addEventListener('DOMContentLoaded', function(event) {
     document.getElementById('select-klass').addEventListener('change', selectClassChange)
     document.getElementById('input-klass').addEventListener('change', selectClassChange)
+    document.getElementById('find').addEventListener('click', findBy)
   });
 </script>
