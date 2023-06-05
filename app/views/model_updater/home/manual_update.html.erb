@@ -1,5 +1,5 @@
 <div class="content">
-  <%= form_tag update_path, class: 'pure-form' do %>
+  <%= form_tag validate_path, class: 'pure-form' do %>
     <p>
       <%= select_tag "klass", options_for_select(@model_names.sort, params[:klass]), prompt: "Select a model", id: 'select-klass' %>
       or
@@ -39,10 +39,7 @@
       </table>
 
       <div>
-        <p class="text-warning font-bold">
-          Please be aware that: These updates will skip the validation of the record and may potentially cause data errors.
-        </p>
-        <%= submit_tag "Save", class: "pure-button pure-button-primary" %>
+        <%= submit_tag "Validate", class: "pure-button pure-button-primary" %>
       </div>
     <% end %>
   <% end %>

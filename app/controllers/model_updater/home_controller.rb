@@ -8,13 +8,19 @@ module ModelUpdater
       @model_names = ModelUpdater::Diploma.models
     end
 
-    def update
+    def validate
       @record.assign_attributes user_params
-      @changes = @record.changes
-      @validate_error_flag = @record.valid?
+      @changes = @record.changes.transform_values{|(from, to)| "From #{from || 'null'} to #{to}"}
+      @validate_error_flag = !@record.valid?
       @full_messages = @record.errors.full_messages
 
-      render "update"
+      render "validate"
+    end
+
+    def update
+      @record.update_columns user_params
+
+      redirect_to root_path
     end
 
     def manual_update

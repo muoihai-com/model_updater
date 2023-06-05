@@ -4,4 +4,5 @@ ModelUpdater::Engine.routes.draw do
   get "manual_update", to: "home#manual_update"
   get "scripts", to: "home#scripts"
   post "/update", to: "home#update", as: :update
+  post "validate", to: "home#validate", as: :validate
 end

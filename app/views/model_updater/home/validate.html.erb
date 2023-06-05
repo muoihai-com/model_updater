@@ -1,0 +1,29 @@
+<div class="content">
+  You have made the following changes: 
+  <pre>
+    <%= @changes %>
+  </pre>
+
+  <p>
+    <%= "Verify that these changes are #{@validate_error_flag ? "invalid" : "valid"}." %>
+  </p>
+
+  <p class="text-warning font-bold">
+    Please be aware that: These updates will skip the validation of the record and may potentially cause data errors.
+  </p>
+
+  <%= form_tag update_path, class: 'pure-form' do %>
+    <%= hidden_field_tag "klass", @record.class %>
+    <%= hidden_field_tag "attribute", 'id' %>
+    <%= hidden_field_tag "value", @record.id %>
+    <% @column_names.each do |col| %>
+      <% next unless @record.try("#{col}_changed?") %>
+      
+      <%= hidden_field_tag "user[#{col}]", @record.try(col) %>
+    <% end %>
+
+    <div>
+      <%= submit_tag "Save", class: "pure-button pure-button-primary" %>
+    </div>
+  <% end %>
+</div>
