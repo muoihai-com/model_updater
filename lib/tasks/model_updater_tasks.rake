@@ -1,7 +1,7 @@
 namespace :model_updater do
-  desc 'Generate config file for ModelUpdater'
+  desc "Generate config file for ModelUpdater"
   task :install do
-    initializer_file = File.join(Rails.root, 'config', 'initializers', 'model_updater.rb')
+    initializer_file = Rails.root.join("config", "initializers", "model_updater.rb")
     content = <<~DOC
       # This is an example initializer for model_updater
 

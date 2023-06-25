@@ -5,115 +5,110 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
-
-  <style>
-    * {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-
-    body {
-        line-height: 1.7em;
-        color: #7f8c8d;
-        font-size: 13px;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    label {
-        color: #34495e;
-    }
-
-    .home-menu {
-    padding: 0.5em;
-    text-align: center;
-    box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
-    }
-    .home-menu {
-        background: #2d3e50;
-    }
-    .pure-menu.pure-menu-fixed {
-        border-bottom: none;
-        z-index: 4;
-    }
-
-    .home-menu .pure-menu-heading {
-        color: white;
-        font-weight: 400;
-        font-size: 120%;
-    }
-
-    .home-menu .pure-menu-selected a {
-        color: white;
-    }
-
-    .home-menu a {
-        color: #6FBEF3;
-    }
-    .home-menu li a:hover,
-    .home-menu li a:focus {
-        background: none;
-        border: none;
-        color: #AECFE5;
-    }
-
-    .content-wrapper {
-      width: 100%;
-    }
-
-    .content {
-      max-width: 1080px;
-      width: 100%;
-      margin: auto;
-    }
-
-    .width-full {
-      width: 100%;
-    }
-
-    .pure-table {
-      margin-top: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .text-warning {
-      color: #ff8800;
-    }
-
-    .font-bold {
-      font-weight: bold;
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css"
+      integrity="sha512-KXol4x3sVoO+8ZsWPFI/r5KBVB/ssCGB5tsv2nVOKwLg33wTFP3fmnXa47FdSVIshVTgsYk/1734xSk9aFIa4A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"
+      integrity="sha512-Xo0Jh8MsOn72LGV8kU5LsclG7SUzJsWGhXbWcYs2MAmChkQzwiW/yTQwdJ8w6UA9C6EVG18GHb/TrYpYCjyAQw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/ace.min.js" integrity="sha512-H7NE0Mw3ElsV/iE8dqG8hNkRkKkQ4C8l1i66QouYmeJZ0jRH/EvtMIOiIYlP6TxktZoExjy8Y+uvzTsJtwPdUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+      html,
+      body,
+      .ui.text.container {
+        font-family: "Noto Sans", sans-serif;
+      }
+      .main.container {
+        margin-top: 7em;
+      }
+      .flex-column {
+        flex-direction: column;
+      }
+      .w-full {
+        width: 100% !important;
+      }
+      .bg-neutral-300 {
+        background-color: rgb(212 212 212);
+      }
+      .rounded {
+        border-radius: 0.25rem;
+      }
+      .p-4 {
+        padding: 1rem;
+      }
+      .editor {
+        height: 420px;
+      }
+    </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="home-menu pure-menu pure-menu-horizontal">
-    <a class="pure-menu-heading" href="#">Model Updater</a>
-
-    <ul class="pure-menu-list">
-      <li class="pure-menu-item <%= path_active?(root_path) ? 'pure-menu-selected' : ''%>">
-        <a href="#" class="pure-menu-link">Dashboard</a>
-      </li>
-      <li class="pure-menu-item <%= path_active?(scripts_path) ? 'pure-menu-selected' : ''%>">
-        <a href="#" class="pure-menu-link">Scripts</a>
-      </li>
-      <li class="pure-menu-item <%= path_active?(manual_update_path) ? 'pure-menu-selected' : ''%>">
-        <%= link_to 'Manual Update', manual_update_path, class: 'pure-menu-link' %>
-      </li>
-    </ul>
+  <div class="ui fixed inverted menu">
+    <div class="ui container">
+      <%= link_to 'Model Updater', root_path, class: "header item" %>
+      <%= link_to 'Home', root_path, class: "item" %>
+      <div class="ui simple dropdown item">
+        Menu <i class="dropdown icon"></i>
+        <div class="menu">
+          <%= link_to 'Scripts', scripts_path, class: "item" %>
+          <%= link_to 'Models', manual_update_path, class: "item" %>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  <div class="ui main text container">
+    <%= yield %>
+  </div>
 
-<div class="content-wrapper">
-  <%= yield %>
-</div>
+  <div class="ui modal confirmation">
+      <div class="header">Confirmation</div>
+      <div class="content">
+        <p>
+          These changes may cause data errors, do you still want to continue?
+        </p>
+      </div>
+      <div class="actions">
+        <div class="ui cancel button">Cancel</div>
+        <div class="ui ok red button">OK</div>
+      </div>
+    </div>
 
+    <script>
+      $("button.confirmation").on("click", function () {
+        $(".ui.confirmation.modal")
+          .modal({
+            onApprove: function () {
+              window.alert("Approved!");
+            }
+          })
+          .modal("show");
+      });
+
+      $('section .ui.accordion').accordion();
+
+      $('.editor').each(function(_, ele) {
+        var editor = ace.edit(ele);
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/ruby");
+        editor.setReadOnly(true);
+      })
+    </script>
 </body>
 </html>

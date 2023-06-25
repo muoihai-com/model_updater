@@ -5,5 +5,9 @@ module ModelUpdater
     config.generators do |g|
       g.test_framework :rspec
     end
+
+    config.after_initialize do
+      ModelUpdater.find_definitions
+    end
   end
 end

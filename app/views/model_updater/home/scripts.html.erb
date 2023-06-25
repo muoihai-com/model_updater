@@ -1,0 +1,29 @@
+<% @scripts.each do |script| %>
+  <section id="<%= script.name %>">
+    <h1 class="ui header"><%= script.title %></h1>
+    <div>
+      <button class="ui labeled mini icon red button">
+        <i class="plus icon"></i>
+        Run
+      </button>
+    </div>
+    <div class="ui accordion">
+      <div class="title">
+        <i class="dropdown icon"></i>
+        Up
+      </div>
+      <div class="content">
+        <div class="transition hidden">
+          <div class="editor"><%= script.up %></div>
+        </div>
+      </div>
+      <div class="title">
+        <i class="dropdown icon"></i>
+        Down
+      </div>
+      <div class="content">
+        <div class="editor"><%= script.down %></div>
+      </div>
+  </section>
+  <div class="ui divider"></div>
+<% end %>
