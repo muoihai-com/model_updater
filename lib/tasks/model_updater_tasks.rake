@@ -5,8 +5,8 @@ namespace :model_updater do
     content = <<~DOC
       # This is an example initializer for model_updater
 
-      ModelUpdater.setup do |config|
-        config.valid_models = %w[]
+      ModelUpdater.configure do |config|
+        config.valid_models = %w[User]
       end
     DOC
     File.write(initializer_file, content)

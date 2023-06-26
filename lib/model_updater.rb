@@ -13,8 +13,9 @@ module ModelUpdater
   class Configuration
     def initialize
       @table = {
+        valid_models: [],
         auth: false,
-        actions_file_path: "tmp/model_updaters/actions.yml"
+        actions_file_path: "tmp/model_updaters/actions.json"
       }
     end
 
@@ -33,7 +34,7 @@ module ModelUpdater
       mid[/.*(?==\z)/m].present? || @table.key?(mid.to_sym)
     end
 
-    def method_missing(mid, *args)
+    def method_missing mid, *args
       len = args.length
       mname = mid[/.*(?==\z)/m]
       if mname

@@ -11,12 +11,13 @@ module ModelUpdater
     end
 
     class Internal
+      @scripts = {}
+
       class << self
         attr_reader :scripts
       end
 
       def self.find_or_create name
-        @scripts ||= {}
         @scripts[name.to_sym] || @scripts[name.to_sym] = new(name.to_sym)
       end
 

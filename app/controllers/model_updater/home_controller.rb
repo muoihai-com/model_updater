@@ -6,12 +6,7 @@ module ModelUpdater
 
     def index
       @scripts = ModelUpdater::Script.all.values
-
-      action = Struct.new(:type, :user, :script_id, :script_title, :model_name, :model_id, :changes)
-      @actions = [
-        action.new("manual", "example@gmail.com", nil, nil, "User", 1, {"name" => %w[bill bob]}),
-        action.new("script", "example@gmail.com", 1, "Thay đổi deadline", nil, nil)
-      ]
+      @actions = ModelUpdater::Actions.all.reverse
     end
 
     def validate
@@ -28,10 +23,11 @@ module ModelUpdater
       action = ModelUpdater::Action.new
       action.changes = @record.changes
       action.type = "models"
-      action.user = model_updater_account.try(:email) || request.ip
+      action.user = defined?(model_updater_account) ? model_updater_account.try(:email) : request.remote_ip
       action.model_id = @record.id
       action.model_name = @record.class.name
       action.save
+      @record.update_columns user_params
 
       redirect_to root_path
     end
@@ -42,6 +38,50 @@ module ModelUpdater
 
     def scripts
       @scripts = ModelUpdater::Script.all.values
+    end
+
+    def run_script
+      script = ModelUpdater::Script.all[params[:id].to_sym]
+      return redirect_to(root_path) if script.blank?
+
+      action = ModelUpdater::Action.new
+      action.type = "scripts"
+      action.user = defined?(model_updater_account) ? model_updater_account.try(:email) : request.remote_ip
+      action.model_id = script.name
+      action.model_name = script.title
+      action.changes = script.proxy.up if script.proxy.respond_to?(:up)
+      action.save
+
+      redirect_to root_path
+    end
+
+    def undo
+      action = ModelUpdater::Actions.all.find{|act| act.id == params[:id]}
+      return redirect_to(root_path) if action.blank?
+
+      new_action = ModelUpdater::Action.new
+      new_action.type = "undo"
+      new_action.user = defined?(model_updater_account) ? model_updater_account.try(:email) : request.remote_ip
+      new_action.model_id = action.id
+      new_action.model_name = action.model_name
+      case action.type
+      when "models"
+        pr = action.changes.transform_values{|(from, _to)| from}
+        record = action.model_name.constantize.find(action.model_id)
+        record.assign_attributes pr
+        new_action.changes = record.changes
+        record.update_columns pr
+      when "scripts"
+        script = ModelUpdater::Script.all[action.model_id.to_sym]
+        return redirect_to(root_path) if action.blank?
+
+        if script.proxy.respond_to?(:down)
+          action.changes.empty? ? script.proxy.down : script.proxy.down(*action.changes)
+        end
+      end
+      new_action.save
+
+      redirect_to root_path
     end
 
     private

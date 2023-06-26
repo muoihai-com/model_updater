@@ -57,6 +57,15 @@
       .editor {
         height: 420px;
       }
+      pre {
+        white-space: pre-line;
+      }
+      .ui.cards>.orange.card, .ui.orange.card, .ui.orange.cards>.card {
+        box-shadow: 0 0 0 1px #d4d4d5, 0 0px 3px 1px #f2711c, 0 1px 3px 0 #d4d4d5;
+      }
+      .ui.cards>.orange.card:hover, .ui.orange.card:hover, .ui.orange.cards>.card:hover {
+        box-shadow: 0 0 0 1px #d4d4d5, 0 0px 5px 1px #f26202, 0 1px 3px 0 #bcbdbd;
+      }
     </style>
 </head>
 <body>
@@ -91,11 +100,22 @@
     </div>
 
     <script>
-      $("button.confirmation").on("click", function () {
+      $("button.confirmation").on("click", function (e) {
         $(".ui.confirmation.modal")
           .modal({
             onApprove: function () {
-              window.alert("Approved!");
+              console.log($(e.currentTarget).data('method'))
+              switch ($(e.currentTarget).data('method')) {
+                case 'run':
+                  $("#" + $(e.currentTarget).data('method')).submit()
+                  break;
+                case 'undo':
+                  console.log($(e.currentTarget).data('id'))
+                  $("#" + $(e.currentTarget).data('id')).submit()
+                  break;
+                default:
+                  break;
+              }
             }
           })
           .modal("show");
@@ -108,6 +128,16 @@
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/ruby");
         editor.setReadOnly(true);
+      })
+
+      if (window.location.hash) {
+        $('#action-' + window.location.hash.replace('#', '')).addClass('orange')
+      }
+
+      $('a.action').on("click", function () {
+        setTimeout(() => {
+          $('#action-' + window.location.hash.replace('#', '')).addClass('orange')
+        }, 1000);
       })
     </script>
 </body>
