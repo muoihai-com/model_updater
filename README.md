@@ -63,6 +63,8 @@ Make sure the filename and the defined name are the same. In the above code `tit
 `task :up` is the code that will be executed when you run it.
 `task :down` is the code that will be executed when you undo, if you don't need to undo you can skip it.
 
+It can use the result returned from the `up` function to use as an input parameter
+
 ## Contributing
 Contribution directions go here.
 
