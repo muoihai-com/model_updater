@@ -1,16 +1,15 @@
-<div class="content">
+<div class="ui main text container">
   You have made the following changes: 
   <pre class="bg-neutral-300 rounded p-4">
     <%= @changes %>
   </pre>
 
-  <p>
-    <%= "Verify that these changes are #{@validate_error_flag ? "invalid" : "valid"}." %>
-  </p>
-
-  <p class="text-warning font-bold">
+  <div class="ui warning message">
+    <div class="header">
+      <%= "Verify that these changes are #{@validate_error_flag ? "invalid" : "valid"}." %>
+    </div>
     Please be aware that: These updates will skip the validation of the record and may potentially cause data errors.
-  </p>
+  </div>
 
   <%= form_tag update_path, class: 'pure-form' do %>
     <%= hidden_field_tag "klass", @record.class %>
@@ -23,7 +22,7 @@
     <% end %>
 
     <div>
-      <%= submit_tag "Save", class: "pure-button pure-button-primary" %>
+      <%= submit_tag "Save", class: "ui button red" %>
     </div>
   <% end %>
 </div>

@@ -29,13 +29,13 @@ module ModelUpdater
       if File.exist?(path)
         File.read(path)
       else
-        yaml = YAML.dump([])
+        data = JSON.generate([])
         FileUtils.mkdir_p(File.dirname(path))
         File.open(path, "w") do |file|
-          file.puts yaml
+          file.puts data
         end
 
-        yaml
+        data
       end
     end
   end

@@ -2,22 +2,29 @@ module ModelUpdater
   class Client
     class << self
       def models
-        valid_models = ModelUpdater.configuration.valid_models
-        if valid_models.blank?
-          ::ApplicationRecord.descendants.map(&:name)
+        all_models = ::ApplicationRecord.descendants.map(&:name)
+        if all_models.blank?
+          Rails.application.eager_load!
+          all_models = ::ApplicationRecord.descendants.map(&:name)
+        end
+        if valid_model_names.blank?
+          all_models
         else
-          ::ApplicationRecord.descendants.map(&:name) & valid_models
+          all_models & valid_model_names
         end
       end
 
       def model name
         klass = Object.const_get(name)
-        valid_models = ModelUpdater.configuration.valid_models
-        if valid_models.present? && !ModelUpdater.configuration.valid_models.include?(klass.name)
-          raise
+        if valid_model_names.present? && !valid_model_names.include?(klass.name)
+          raise ModelUpdater::InvalidModel
         end
 
         ModelUpdater::Proxy.new(klass)
+      end
+
+      def valid_model_names
+        ModelUpdater::Cop.valid_model_names
       end
     end
   end

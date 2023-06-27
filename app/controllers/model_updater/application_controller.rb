@@ -5,14 +5,29 @@ module ModelUpdater
     before_action :authenticate!, :set_locale
 
     def authenticate!
-      return unless ModelUpdater.configuration.auth
-      return if defined?(model_updater_account) && model_updater_account.present?
+      auth = ModelUpdater.configuration.auth
+      return if auth.blank?
+      return if current_account.present?
+      return if authenticate(auth)
 
-      head 401
+      request_http_basic_authentication
+    end
+
+    def authenticate auth_configs
+      authenticate_with_http_basic do |u, p|
+        if auth_configs.include?([u, p])
+          session[:basic_auth_account] = u
+          return true
+        end
+      end
     end
 
     def set_locale
       I18n.locale = :en
+    end
+
+    def current_account
+      session[:basic_auth_account]
     end
   end
 end

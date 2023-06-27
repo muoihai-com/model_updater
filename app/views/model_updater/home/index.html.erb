@@ -1,73 +1,75 @@
-<h1 class="ui header">Scripts</h1>
+<div class="ui main text container">
+  <h1 class="ui header">Scripts</h1>
 
-<% if @scripts.blank? %>
-  <div class="ui placeholder segment">
-    <div class="ui icon header">
-      <i class="file code outline icon"></i>
-      No scripts are listed.
-    </div>
-    <div class="ui primary button"><%= link_to 'Tutorial - Add Script', 'https://github.com/muoihai-com/model_updater#add-script' %></div>
-  </div>
-<% else %>
-  <div class="ui relaxed divided list">
-  <% @scripts.each do |script| %>
-    <div class="item">
-      <div class="content">
-        <%= link_to "#{scripts_path}##{script.name}", class: "header" do %>
-          <div class="ui horizontal label">#<%= script.name %></div>
-          <%= script.title %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-  </div>
-<% end %>
-
-<h1 class="ui header">Histories</h1>
-<div class="ui cards flex-column">
-  <% if @actions.blank? %>
+  <% if @scripts.blank? %>
     <div class="ui placeholder segment">
       <div class="ui icon header">
-        <i class="calendar alternate outline icon"></i>
-        No action has been taken yet
+        <i class="file code outline icon"></i>
+        No scripts are listed.
       </div>
+      <div class="ui primary button"><%= link_to 'Tutorial - Add Script', 'https://github.com/muoihai-com/model_updater#add-script' %></div>
     </div>
   <% else %>
-    <% @actions.each do |action| %>
-      <div class="ui card w-full" id="action-<%= action.id %>">
+    <div class="ui relaxed divided list">
+    <% @scripts.each do |script| %>
+      <div class="item">
         <div class="content">
-        <div class="header"><%= action.user %></div>
-        <% if action.type == "models" %>
-          <div class="meta">updated <b><%= action.model_name %>#<%= action.model_id %></b> <%= time_ago_in_words(action.created_at) %> ago</div>
-        <% elsif action.type == "scripts"%>
-          <div class="meta">used script <b><%= link_to action.model_name, "#{scripts_path}##{action.model_id}" %></b> <%= time_ago_in_words(action.created_at) %> ago</div>
-        <% elsif action.type == "undo"%>
-          <div class="meta">undo action <b><%= link_to action.model_id, "##{action.model_id}", class: "action" %></b> <%= time_ago_in_words(action.created_at) %> ago</div>
-        <% end %>
-        <div class="description">
-          <% if (action.type == "models" || action.type == "undo") && action.changes %>
-            <pre class="bg-neutral-300 rounded p-4">
-              <%= action.changes.transform_values{|(from, to)| "From #{from || 'null'} to #{to}"} %>
-            </pre>
-          <% elsif action.type == "scripts" && action.changes %>
-            <pre class="bg-neutral-300 rounded p-4">
-              <%= action.changes %>
-            </pre>
+          <%= link_to "#{scripts_path}##{script.name}", class: "header" do %>
+            <div class="ui horizontal label">#<%= script.name %></div>
+            <%= script.title %>
           <% end %>
         </div>
-        </div>
-        <% if action.type != "undo" %>
-          <div class="extra content">
-            <button class="ui labeled icon button red confirmation" data-method="undo" data-id="<%= action.id %>">
-              <i class="undo icon"></i>
-              Undo
-            </button>
-
-            <%= form_tag undo_path(id: action.id), method: :post, id: action.id do %>
-            <% end %>
-          </div>
-        <% end %>
       </div>
     <% end %>
+    </div>
   <% end %>
+
+  <h1 class="ui header">Histories</h1>
+  <div class="ui cards flex-column">
+    <% if @actions.blank? %>
+      <div class="ui placeholder segment">
+        <div class="ui icon header">
+          <i class="calendar alternate outline icon"></i>
+          No action has been taken yet
+        </div>
+      </div>
+    <% else %>
+      <% @actions.each do |action| %>
+        <div class="ui card w-full" id="action-<%= action.id %>">
+          <div class="content">
+          <div class="header"><%= action.user %></div>
+          <% if action.type == "models" %>
+            <div class="meta">updated <b><%= action.model_name %>#<%= action.model_id %></b> <%= time_ago_in_words(action.created_at) %> ago</div>
+          <% elsif action.type == "scripts"%>
+            <div class="meta">used script <b><%= link_to action.model_name, "#{scripts_path}##{action.model_id}" %></b> <%= time_ago_in_words(action.created_at) %> ago</div>
+          <% elsif action.type == "undo"%>
+            <div class="meta">undo action <b><%= link_to action.model_id, "##{action.model_id}", class: "action" %></b> <%= time_ago_in_words(action.created_at) %> ago</div>
+          <% end %>
+          <div class="description">
+            <% if (action.type == "models" || action.type == "undo") && action.changes %>
+              <pre class="bg-neutral-300 rounded p-4">
+                <%= action.changes.transform_values{|(from, to)| "From #{from || 'null'} to #{to}"} %>
+              </pre>
+            <% elsif action.type == "scripts" && action.changes %>
+              <pre class="bg-neutral-300 rounded p-4">
+                <%= action.changes %>
+              </pre>
+            <% end %>
+          </div>
+          </div>
+          <% if action.type != "undo" %>
+            <div class="extra content">
+              <button class="ui labeled icon button red confirmation" data-method="undo" data-id="<%= action.id %>">
+                <i class="undo icon"></i>
+                Undo
+              </button>
+
+              <%= form_tag undo_path(id: action.id), method: :post, id: action.id do %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 </div>

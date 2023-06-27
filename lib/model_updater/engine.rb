@@ -7,6 +7,7 @@ module ModelUpdater
     end
 
     config.after_initialize do
+      ModelUpdater.load_file_config
       ModelUpdater.find_definitions
     end
   end

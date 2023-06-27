@@ -45,6 +45,9 @@
       .w-full {
         width: 100% !important;
       }
+      .w-3\/5 {
+        width: 60%;
+      }
       .bg-neutral-300 {
         background-color: rgb(212 212 212);
       }
@@ -53,6 +56,12 @@
       }
       .p-4 {
         padding: 1rem;
+      }
+      .px-4 {
+        padding: 0 1rem;
+      }
+      .mt-4 {
+        margin-top: 1rem;
       }
       .editor {
         height: 420px;
@@ -88,9 +97,9 @@
       </div>
     </div>
   </div>
-  <div class="ui main text container">
-    <%= yield %>
-  </div>
+  
+  <%= yield %>
+  
 
   <div class="ui modal confirmation">
       <div class="header">Confirmation</div>

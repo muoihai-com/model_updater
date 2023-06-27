@@ -1,5 +1,6 @@
 require_relative "model_updater/actions"
 require_relative "model_updater/client"
+require_relative "model_updater/cop"
 require_relative "model_updater/definition_proxy"
 require_relative "model_updater/engine"
 require_relative "model_updater/file"
@@ -11,10 +12,12 @@ module ModelUpdater
   class InvalidModel < StandardError; end
 
   class Configuration
+    CONFIG_PATH = "config/model_updater.yml"
+    CONFIG_KEYS = %w[models auth actions_file_path]
+
     def initialize
       @table = {
-        valid_models: [],
-        auth: false,
+        models: [],
         actions_file_path: "tmp/model_updaters/actions.json"
       }
     end
@@ -30,8 +33,8 @@ module ModelUpdater
 
     private
 
-    def respond_to_missing? mid
-      mid[/.*(?==\z)/m].present? || @table.key?(mid.to_sym)
+    def respond_to_missing? mid, include_private = false
+      mid[/.*(?==\z)/m].present? || super
     end
 
     def method_missing mid, *args
@@ -43,7 +46,7 @@ module ModelUpdater
         end
 
         @table[mname.to_sym] = args[0]
-      elsif len.zero? && @table.key?(mid.to_sym)
+      elsif len.zero?
         @table[mid]
       else
         begin
@@ -81,5 +84,24 @@ module ModelUpdater
         ModelUpdater::Script::Reader.read(file)
       end
     end
+  end
+
+  def self.load_file_config
+    if File.exist?(Rails.root.join(ModelUpdater::Configuration::CONFIG_PATH))
+      yaml = File.read(Rails.root.join(ModelUpdater::Configuration::CONFIG_PATH))
+      config = YAML.safe_load(yaml)
+
+      configure do |c|
+        config.each do |key, value|
+          next unless ModelUpdater::Configuration::CONFIG_KEYS.include?(key)
+
+          c[key] = value
+        end
+      end
+    else
+      false
+    end
+  rescue StandardError
+    false
   end
 end

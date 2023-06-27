@@ -16,7 +16,7 @@ $ bundle install
 Run the following code to create the config file:
 
 ```bash
-rake model_updater:install # It will create file config/initializers/model_updater.rb
+rake model_updater:install # It will create file config/model_updater.yml
 ```
 
 Add the following to your `config/routes.rb`:

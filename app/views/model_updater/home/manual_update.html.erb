@@ -1,7 +1,9 @@
-<h1 class="ui header">Models</h1>
+<div class="ui main text container">
+  <h1 class="ui header">Models</h1>
+</div>
 
-<div class="content">
-  <%= form_tag validate_path, class: 'pure-form' do %>
+<%= form_tag validate_path, class: 'ui form' do %>
+  <div class="ui mt-4 text container">
     <p>
       <%= select_tag "klass", options_for_select(@model_names.sort, params[:klass]), prompt: "Select a model", id: 'select-klass' %>
       or
@@ -16,36 +18,37 @@
       with value <%= text_field_tag "value", params[:value], placeholder: "value..." %>
       </p>
       <p>
-        <button class="pure-button pure-button-primary" id="find">Find</button>
+        <button class="ui button blue" id="find">Find</button>
       </p>
     <% end %>
-
+  </div>
     <% if @record.present? %>
-      <table class="ui celled table">
-        <thead>
-            <tr>
-                <th>Attribute</th>
-                <th>Value</th>
-                <th>Update</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% @column_names.each do |col| %>
+      <div class="ui mt-4 px-4 container">
+        <table class="ui celled table">
+          <thead>
               <tr>
-                <td><%= col %></td>
-                <td class="width-full"><%= @record.try(col) %></td>
-                <td><%= text_field_tag "user[#{col}]", nil %></td>
+                  <th>Attribute</th>
+                  <th>Value</th>
+                  <th>Update</th>
               </tr>
-            <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+              <% @column_names.each do |col| %>
+                <tr>
+                  <td><%= col %></td>
+                  <td class="w-3/5"><%= @record.try(col) %></td>
+                  <td><%= field_tag @record, col, "user[#{col}]", nil %></td>
+                </tr>
+              <% end %>
+          </tbody>
+        </table>
+      </div>
 
-      <div>
-        <%= submit_tag "Validate", class: "pure-button pure-button-primary" %>
+      <div class="ui mt-4 text container">
+        <%= submit_tag "Validate", class: "ui button blue" %>
       </div>
     <% end %>
-  <% end %>
-</div>
+<% end %>
 
 <script>
   function selectClassChange(e) {

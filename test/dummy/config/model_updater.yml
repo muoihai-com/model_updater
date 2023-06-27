@@ -1,0 +1,7 @@
+---
+models:
+- User
+- name: Admin
+  fields:
+  - email
+  - first_name

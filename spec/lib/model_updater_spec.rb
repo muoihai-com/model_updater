@@ -6,5 +6,6 @@ RSpec.describe ModelUpdater do
     expect(ModelUpdater::Engine).to be_truthy
     expect(ModelUpdater::Proxy).to be_truthy
     expect(ModelUpdater::DefinitionProxy.new("aurora")).to be_truthy
+    expect(ModelUpdater::Cop.valid_model_names).to eq(%w[User Admin])
   end
 end
