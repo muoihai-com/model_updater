@@ -1,13 +1,17 @@
 <div class="ui main text container">
   <h1 class="ui header">Scripts</h1>
-
+ 
   <% if @scripts.blank? %>
     <div class="ui placeholder segment">
       <div class="ui icon header">
         <i class="file code outline icon"></i>
         No scripts are listed.
       </div>
-      <div class="ui primary button"><%= link_to 'Tutorial - Add Script', 'https://github.com/muoihai-com/model_updater#add-script' %></div>
+      <%= link_to 'https://github.com/muoihai-com/model_updater#add-script', target: "_blank" do %>
+        <div class="ui primary button">
+          Tutorial - Add Script
+        </div>
+      <% end %>
     </div>
   <% else %>
     <div class="ui relaxed divided list">
@@ -48,7 +52,7 @@
           <div class="description">
             <% if (action.type == "models" || action.type == "undo") && action.changes %>
               <pre class="bg-neutral-300 rounded p-4">
-                <%= action.changes.transform_values{|(from, to)| "From #{from || 'null'} to #{to}"} %>
+                <%= action.changes.transform_values{|(from, to)| "From #{from.nil? ? 'null' : from} to #{to}"} %>
               </pre>
             <% elsif action.type == "scripts" && action.changes %>
               <pre class="bg-neutral-300 rounded p-4">

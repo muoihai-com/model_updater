@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Model updater</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
@@ -31,13 +33,25 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/ace.min.js" integrity="sha512-H7NE0Mw3ElsV/iE8dqG8hNkRkKkQ4C8l1i66QouYmeJZ0jRH/EvtMIOiIYlP6TxktZoExjy8Y+uvzTsJtwPdUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
+      html,body {
+        overflow: auto;
+      }
       html,
       body,
       .ui.text.container {
         font-family: "Noto Sans", sans-serif;
       }
+      .break-words{
+        overflow-wrap: break-word;
+      }
       .main.container {
         margin-top: 7em;
+      }
+      .flex{
+        display: flex;
+      }
+      items-center{
+        align-items: center;
       }
       .flex-column {
         flex-direction: column;
@@ -60,7 +74,20 @@
       .px-4 {
         padding: 0 1rem;
       }
+      .mb-4 {
+        margin-bottom: 1rem;
+      }
+      .ml-2 {
+        margin-left: 0.5rem;
+      }
+      .ml-4 {
+        margin-left: 1rem;
+      }
       .mt-4 {
+        margin-top: 1rem;
+      }
+      .mx-4 {
+        margin-bottom: 1rem;
         margin-top: 1rem;
       }
       .editor {

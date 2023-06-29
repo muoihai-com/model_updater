@@ -19,6 +19,10 @@ module ModelUpdater
       RecordProxy.new(record)
     end
 
+    def try *args
+      klass.try(*args)
+    end
+
     private
 
     def proxied_columns

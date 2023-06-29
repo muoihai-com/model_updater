@@ -8,11 +8,17 @@
     <div class="header">
       <%= "Verify that these changes are #{@validate_error_flag ? "invalid" : "valid"}." %>
     </div>
+    <% if @full_messages.present? %>
+      <pre class="bg-neutral-300 rounded p-4 mx-4">
+        <%= @full_messages.join("\n") %>
+      </pre>
+    <% end %>
+
     Please be aware that: These updates will skip the validation of the record and may potentially cause data errors.
   </div>
 
   <%= form_tag update_path, class: 'pure-form' do %>
-    <%= hidden_field_tag "klass", @record.class %>
+    <%= hidden_field_tag "klass", @record.klass.class %>
     <%= hidden_field_tag "attribute", 'id' %>
     <%= hidden_field_tag "value", @record.id %>
     <% @column_names.each do |col| %>
@@ -21,7 +27,12 @@
       <%= hidden_field_tag "user[#{col}]", @record.try(col) %>
     <% end %>
 
-    <div>
+    <div class="ui buttons">
+      <%= link_to manual_update_path, class: "ui button" do %>
+        Back
+      <% end %>
+      <div class="or"></div>
+
       <%= submit_tag "Save", class: "ui button red" %>
     </div>
   <% end %>

@@ -1,0 +1,16 @@
+<div class="ui text main container">
+  <h1 class="ui mt-7 center aligned icon header">
+    <i class="circular inverted bug icon"></i>
+    Server Error
+  </h1>
+
+  <div class="ui negative message">
+    <div class="header">
+      <%= @exception.class %> - <%= @exception.message %>
+    </div>
+    <p class="break-words">
+      <%= @exception.backtrace.first(10).join("\n") %>
+    </p>
+  </div>
+</div>
+

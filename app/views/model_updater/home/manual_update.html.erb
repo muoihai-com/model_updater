@@ -2,12 +2,10 @@
   <h1 class="ui header">Models</h1>
 </div>
 
-<%= form_tag validate_path, class: 'ui form' do %>
+<%= form_tag validate_path, class: 'ui form warning' do %>
   <div class="ui mt-4 text container">
     <p>
       <%= select_tag "klass", options_for_select(@model_names.sort, params[:klass]), prompt: "Select a model", id: 'select-klass' %>
-      or
-      <%= text_field_tag "klass", params[:klass], placeholder: "Type here...", id: 'input-klass' %>
     </p>
 
     <% if params[:klass].present? %>
@@ -22,32 +20,48 @@
       </p>
     <% end %>
   </div>
-    <% if @record.present? %>
-      <div class="ui mt-4 px-4 container">
-        <table class="ui celled table">
-          <thead>
+  <% if @record.present? %>
+    <div class="ui mt-4 px-4 container">
+      <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @column_names.each do |col| %>
               <tr>
-                  <th>Attribute</th>
-                  <th>Value</th>
-                  <th>Update</th>
+                <td><%= col %></td>
+                <td class="w-3/5"><%= @record.try(col) %></td>
+                <td>
+                  <% if [true, false].include? @record.try(col) %>
+                    <%= label_tag "user[#{col}]", class: "flex items-center" do %>
+                      <%= field_tag @record, col, "user[#{col}]", nil %><span class="ml-2">True</span>
+                    <% end %>
+                  <% else %>
+                    <%= field_tag @record, col, "user[#{col}]", nil %>
+                  <% end %>
+                </td>
               </tr>
-          </thead>
-          <tbody>
-              <% @column_names.each do |col| %>
-                <tr>
-                  <td><%= col %></td>
-                  <td class="w-3/5"><%= @record.try(col) %></td>
-                  <td><%= field_tag @record, col, "user[#{col}]", nil %></td>
-                </tr>
-              <% end %>
-          </tbody>
-        </table>
-      </div>
+            <% end %>
+        </tbody>
+      </table>
+    </div>
 
-      <div class="ui mt-4 text container">
-        <%= submit_tag "Validate", class: "ui button blue" %>
+    <div class="ui mt-4 mb-4 text container">
+      <%= submit_tag "Validate", class: "ui button blue" %>
+    </div>
+  
+  <% elsif params[:klass] && params[:attribute] && params[:value] %>
+    <div class="ui mt-4 text container">
+      <div class="ui warning message">
+        <i class="warning icon"></i>
+        Record Not Found
       </div>
-    <% end %>
+    </div>
+  <% end %>
 <% end %>
 
 <script>
@@ -72,7 +86,6 @@
 
   document.addEventListener('DOMContentLoaded', function(event) {
     document.getElementById('select-klass').addEventListener('change', selectClassChange)
-    document.getElementById('input-klass').addEventListener('change', selectClassChange)
     document.getElementById('find').addEventListener('click', findBy)
   });
 </script>

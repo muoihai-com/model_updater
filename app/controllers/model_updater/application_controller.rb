@@ -4,6 +4,12 @@ module ModelUpdater
 
     before_action :authenticate!, :set_locale
 
+    rescue_from "StandardError" do |exception|
+      @exception = exception
+
+      render "model_updater/supports/bug"
+    end
+
     def authenticate!
       auth = ModelUpdater.configuration.auth
       return if auth.blank?

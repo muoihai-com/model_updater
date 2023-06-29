@@ -11,7 +11,9 @@ module ModelUpdater
 
     def validate
       @record.assign_attributes user_params
-      @changes = @record.changes.transform_values{|(from, to)| "From #{from || 'null'} to #{to}"}
+      @changes = @record.changes.transform_values do |(from, to)|
+        "From #{from.nil? ? 'null' : from} to #{to}"
+      end
       @validate_error_flag = !@record.valid?
       @full_messages = @record.errors.full_messages
 
@@ -20,12 +22,14 @@ module ModelUpdater
 
     def update
       @record.assign_attributes user_params
+      return redirect_to(root_path) unless @record.changed?
+
       action = ModelUpdater::Action.new
       action.changes = @record.changes
       action.type = "models"
       action.user = current_account || request.remote_ip
       action.model_id = @record.id
-      action.model_name = @record.class.name
+      action.model_name = @record.klass.class.name
       action.save
       @record.update_columns user_params
 
@@ -93,6 +97,8 @@ module ModelUpdater
       return if @proxy.blank?
 
       @column_names = @proxy.column_names
+    rescue NameError
+      redirect_to manual_update_path
     end
 
     def load_record
@@ -108,8 +114,8 @@ module ModelUpdater
     end
 
     def user_params
-      params[:user].each{|key, _| params[:user].delete(key) if params[:user][key].blank?}
-      params[:user].as_json
+      params[:user]&.each{|key, _| params[:user].delete(key) if params[:user][key].blank?}
+      (params[:user] || {}).as_json
     end
   end
 end
