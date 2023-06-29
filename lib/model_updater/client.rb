@@ -17,7 +17,7 @@ module ModelUpdater
       def model name
         klass = Object.const_get(name)
         if valid_model_names.present? && !valid_model_names.include?(klass.name)
-          raise ModelUpdater::InvalidModel
+          raise ModelUpdater::InvalidModelError
         end
 
         ModelUpdater::Proxy.new(klass)

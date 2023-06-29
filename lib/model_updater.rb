@@ -9,7 +9,8 @@ require_relative "model_updater/script"
 require_relative "model_updater/version"
 
 module ModelUpdater
-  class InvalidModel < StandardError; end
+  class InvalidModelError < StandardError; end
+  class UpdateFieldError < StandardError; end
 
   class Configuration
     CONFIG_PATH = "config/model_updater.yml"
