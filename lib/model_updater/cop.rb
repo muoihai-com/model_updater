@@ -37,7 +37,7 @@ module ModelUpdater
       fields = model.is_a?(Hash) ? model["fields"] : []
       exclude_fields = model.is_a?(Hash) ? model["exclude_fields"] : []
 
-      {name: name, fields: fields, exclude_fields: exclude_fields}
+      {name: name, fields: fields, exclude_fields: exclude_fields} # rubocop:disable Style/HashSyntax
     end
   end
 end

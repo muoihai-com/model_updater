@@ -23,7 +23,7 @@ module ModelUpdater
 
     def proxied_columns
       info = ModelUpdater::Cop.instance.info(klass)
-      all = klass.column_names
+      all = cols
       exclude_fields = info[:exclude_fields] || []
       fields = info[:fields] ? (all & info[:fields]) : all
 
@@ -37,6 +37,10 @@ module ModelUpdater
     def respond_to_missing? *args
       klass.send(:respond_to_missing?, *args)
     end
+
+    def cols
+      klass.column_names
+    end
   end
 
   class RecordProxy < Proxy
@@ -45,6 +49,12 @@ module ModelUpdater
       raise ModelUpdater::UpdateFieldError if (update_fields - proxied_columns).present?
 
       klass.update_columns attributes
+    end
+
+    private
+
+    def cols
+      klass.class.column_names
     end
   end
 end

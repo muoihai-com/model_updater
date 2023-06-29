@@ -1,7 +1,7 @@
 ---
 models:
-- User
-- name: Admin
+- Admin
+- name: User
   fields:
-  - email
-  - first_name
+  - name
+  - age
