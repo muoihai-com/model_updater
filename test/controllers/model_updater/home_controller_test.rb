@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module ModelUpdater
+module Editus
   class HomeControllerTest < ActionDispatch::IntegrationTest
     include Engine.routes.url_helpers
 

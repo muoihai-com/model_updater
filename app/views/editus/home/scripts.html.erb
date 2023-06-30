@@ -1,0 +1,50 @@
+<div class="ui main text container">
+  <h1 class="ui header">Scripts</h1>
+
+  <% if @scripts.blank? %>
+    <div class="ui placeholder segment">
+      <div class="ui icon header">
+        <i class="file code outline icon"></i>
+        No scripts are listed.
+      </div>
+      <%= link_to 'https://github.com/muoihai-com/editus#add-script', target: "_blank" do %>
+        <div class="ui primary button">
+          Tutorial - Add Script
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% @scripts.each do |script| %>
+    <section id="<%= script.name %>">
+      <h1 class="ui header"><%= script.title %></h1>
+      <div>
+        <button class="ui labeled mini icon red button confirmation" data-method="run">
+          <i class="plus icon"></i>
+          Run
+        </button>
+
+        <%= form_tag run_path(id: script.name), method: :post, id: "run" do %>
+        <% end %>
+      </div>
+      <div class="ui accordion">
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Up
+        </div>
+        <div class="content">
+          <div class="transition hidden">
+            <div class="editor"><%= script.up %></div>
+          </div>
+        </div>
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Down
+        </div>
+        <div class="content">
+          <div class="editor"><%= script.down %></div>
+        </div>
+    </section>
+    <div class="ui divider"></div>
+  <% end %>
+</div>

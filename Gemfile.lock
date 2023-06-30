@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    model_updater (0.1.0)
+    editus (0.1.0)
       rails (>= 5.0, < 7.0)
 
 GEM
@@ -172,7 +172,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  model_updater!
+  editus!
   rspec-rails
   sqlite3
 

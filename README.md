@@ -1,11 +1,11 @@
-# ModelUpdater
+# Editus
 Simplify code execution and database editing. Intuitive web interface. Run code snippets, modify databases in real-time.
 
 ## Installation
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "model_updater", git: "https://github.com/muoihai-com/model_updater.git"
+gem "editus", git: "https://github.com/muoihai-com/editus.git"
 ```
 
 And then execute:
@@ -16,14 +16,14 @@ $ bundle install
 Run the following code to create the config file:
 
 ```bash
-rake model_updater:install # It will create file config/model_updater.yml
+rake editus:install # It will create file config/editus.yml
 ```
 
 Add the following to your `config/routes.rb`:
 
 ```ruby
 Rails.application.routes.draw do
-  mount ModelUpdater::Engine => "/updater" unless Rails.env.production?
+  mount Editus::Engine => "/updater" unless Rails.env.production?
   ...
 end
 ```
@@ -42,7 +42,7 @@ Example:
 `config/model_updaters/update_nick_name_user.rb`
 
 ```rb
-ModelUpdater::Script.define :update_nick_name_user do
+Editus::Script.define :update_nick_name_user do
   title "Updat nick_name of user"
   task :up do
     user = User.find(1)

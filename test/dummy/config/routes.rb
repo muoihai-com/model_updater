@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  mount ModelUpdater::Engine => "/model_updater"
+  mount Editus::Engine => "/editus"
 end

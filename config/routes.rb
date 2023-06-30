@@ -1,4 +1,4 @@
-ModelUpdater::Engine.routes.draw do
+Editus::Engine.routes.draw do
   root "home#index"
 
   get "manual_update", to: "home#manual_update"

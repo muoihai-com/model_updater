@@ -2,14 +2,14 @@ require 'test_helper'
 
 class ModelUpdaterTest < ActiveSupport::TestCase
   test 'it has a version number' do
-    assert ModelUpdater::VERSION
+    assert Editus::VERSION
   end
 
-  test 'ModelUpdater::Diploma.models' do
-    assert_equal(ModelUpdater::Diploma.models, [])
+  test 'Editus::Diploma.models' do
+    assert_equal(Editus::Diploma.models, [])
   end
 
-  test 'ModelUpdater::Diploma.model' do
-    assert(ModelUpdater::Diploma.model('ModelUpdater'))
+  test 'Editus::Diploma.model' do
+    assert(Editus::Diploma.model('Editus'))
   end
 end
