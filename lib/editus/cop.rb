@@ -37,7 +37,7 @@ module Editus
       fields = model.is_a?(Hash) ? model["fields"] : []
       exclude_fields = model.is_a?(Hash) ? model["exclude_fields"] : []
 
-      {name: name, fields: fields, exclude_fields: exclude_fields} # rubocop:disable Style/HashSyntax
+      {name: name, fields: fields, exclude_fields: exclude_fields}
     end
   end
 end

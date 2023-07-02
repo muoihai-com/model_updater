@@ -27,7 +27,7 @@ module Editus
       action = Editus::Action.new
       action.changes = @record.changes
       action.type = "models"
-      action.user = current_account || request.remote_ip
+      action.user = request_account
       action.model_id = @record.id
       action.model_name = @record.klass.class.name
       action.save
@@ -50,7 +50,7 @@ module Editus
 
       action = Editus::Action.new
       action.type = "scripts"
-      action.user = current_account || request.remote_ip
+      action.user = request_account
       action.model_id = script.name
       action.model_name = script.title
       action.changes = script.proxy.up if script.proxy.respond_to?(:up)
@@ -65,7 +65,7 @@ module Editus
 
       new_action = Editus::Action.new
       new_action.type = "undo"
-      new_action.user = current_account || request.remote_ip
+      new_action.user = request_account
       new_action.model_id = action.id
       new_action.model_name = action.model_name
       case action.type

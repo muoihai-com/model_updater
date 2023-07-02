@@ -1,6 +1,6 @@
 module Editus
   class ApplicationController < ActionController::Base
-    include ::ApplicationHelper
+    prepend ::ApplicationHelper
 
     before_action :authenticate!, :set_locale
 
@@ -11,20 +11,18 @@ module Editus
     end
 
     def authenticate!
-      auth = Editus.configuration.auth
-      return if auth.blank?
-      return if current_account.present?
-      return if authenticate(auth)
+      return if editus_auth_account.present?
+      return head 401 if editus_account_needed?
+      return if authenticate(Editus.configuration.auth)
 
       request_http_basic_authentication
     end
 
     def authenticate auth_configs
+      return true if auth_configs.blank?
+
       authenticate_with_http_basic do |u, p|
-        if auth_configs.include?([u, p])
-          session[:basic_auth_account] = u
-          return true
-        end
+        session[:basic_auth_account] = u if auth_configs.include?([u, p])
       end
     end
 
@@ -32,8 +30,22 @@ module Editus
       I18n.locale = :en
     end
 
-    def current_account
-      session[:basic_auth_account]
+    private
+
+    def editus_account_needed?
+      ::ApplicationHelper.method_defined?(:editus_account)
+    end
+
+    def editus_auth_account
+      if editus_account_needed?
+        editus_account if editus_account.is_a?(ActiveRecord::Base)
+      else
+        session[:basic_auth_account]
+      end
+    end
+
+    def request_account
+      editus_auth_account.try(:email) || session[:basic_auth_account] || request.remote_ip
     end
   end
 end

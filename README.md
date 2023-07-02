@@ -16,7 +16,7 @@ $ bundle install
 Run the following code to create the config file:
 
 ```bash
-rake editus:install # It will create file config/editus.yml
+rake editus:install # It will create file config/initializer/editus.rb
 ```
 
 Add the following to your `config/routes.rb`:
@@ -30,20 +30,42 @@ end
 
 ## Usage
 
+### Authentication
+
+Editus supports two forms of authentication:
+
+  1. Define the `editus_account` method in `ApplicationHelper`: This method should return the current account (e.g., `current_user` or `current_admin`). If this method is defined, Editus will use it to determine the current account.
+
+```ruby
+  module ApplicationHelper
+    def editus_account
+      current_user # or any other method that returns the current account
+    end
+  end
+ ```
+    
+  2. Configuration in the config/initializer/editus.rb file: Create an array containing accounts authenticated via HTTP Basic Authentication. Each account is a sub-array with two elements: the username and password.
+
+```ruby
+config.auth = [%w[user@example.com Pass@123456], %w[manager@example.com Pass@123456]]
+```
+
+Use one of the above authentication methods to secure access to Editus. Note that the `editus_account` method will take precedence if both methods are provided.
+
 ### Models
 
 Display a simple form interface that helps you update the fields of the selected model. The update will use `update_columns` so will ignore callback and validate
 
 ### Add Script
 
-To execute existing code create a directory `config/model_updaters` in your code
+To execute existing code create a directory `config/editus` in your code
 
 Example:
-`config/model_updaters/update_nick_name_user.rb`
+`config/editus/update_nick_name_user.rb`
 
 ```rb
 Editus::Script.define :update_nick_name_user do
-  title "Updat nick_name of user"
+  title "Update nick_name of user"
   task :up do
     user = User.find(1)
     nick_name = user.nick_name

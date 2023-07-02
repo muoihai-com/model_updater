@@ -15,6 +15,7 @@ module Editus
   class Configuration
     CONFIG_PATH = "config/editus.yml"
     CONFIG_KEYS = %w[models auth actions_file_path]
+    INITIALIZER_FILE_PATH = "config/initializers/editus.rb"
 
     def initialize
       @table = {

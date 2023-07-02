@@ -1,5 +1,5 @@
 <div class="ui text main container">
-  <h1 class="ui mt-7 center aligned icon header">
+  <h1 class="ui center aligned icon header">
     <i class="circular inverted bug icon"></i>
     Server Error
   </h1>
@@ -12,5 +12,7 @@
       <%= @exception.backtrace.first(10).join("\n") %>
     </p>
   </div>
+
+  <div style="height: 2rem;" />
 </div>
 
