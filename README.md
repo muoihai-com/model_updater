@@ -1,5 +1,7 @@
 # Editus
 
+[![Gem Version](https://badge.fury.io/rb/editus.svg)](https://badge.fury.io/rb/editus)
+
 Streamline your coding and database editing processes with Editus. Its intuitive web interface allows you to execute code snippets and perform real-time database modifications with ease.
 
 # Table of contents
