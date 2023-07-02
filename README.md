@@ -1,11 +1,26 @@
 # Editus
-Simplify code execution and database editing. Intuitive web interface. Run code snippets, modify databases in real-time.
+
+Streamline your coding and database editing processes with Editus. Its intuitive web interface allows you to execute code snippets and perform real-time database modifications with ease.
+
+# Table of contents
+
+- [Editus](#editus)
+  * [Installation](#installation)
+  * [Usage](#usage)
+    + [Authentication](#authentication)
+    + [Models](#models)
+    + [Add Script](#add-script)
+  * [Contributing](#contributing)
+  * [License](#license)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 ## Installation
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "editus", git: "https://github.com/muoihai-com/editus.git"
+gem "editus"
 ```
 
 And then execute:
@@ -23,7 +38,7 @@ Add the following to your `config/routes.rb`:
 
 ```ruby
 Rails.application.routes.draw do
-  mount Editus::Engine => "/updater" unless Rails.env.production?
+  mount Editus::Engine => "/editus" unless Rails.env.production?
   ...
 end
 ```
@@ -69,7 +84,7 @@ Editus::Script.define :update_nick_name_user do
   task :up do
     user = User.find(1)
     nick_name = user.nick_name
-    user.update_columns nick_name: "xatara"
+    user.update_columns nick_name: "editus"
 
     [1, nick_name]
   end
