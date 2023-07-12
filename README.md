@@ -73,6 +73,14 @@ Use one of the above authentication methods to secure access to Editus. Note tha
 
 Display a simple form interface that helps you update the fields of the selected model. The update will use `update_columns` so will ignore callback and validate
 
+You can configure to display only the models and fields that you allow:
+
+```
+config.models = ["User", {name: "Admin", fields: %w[name], exclude_fields: %w[id]}]
+```
+
+For the `Admin` model specified using the fields key. Additionally, the exclude_fields key is used to exclude the `id` field from being displayed.
+
 ### Add Script
 
 To execute existing code create a directory `config/editus` in your code
