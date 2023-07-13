@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Model updater</title>
+  <title>Editus</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
@@ -48,10 +48,13 @@
         margin-top: 7em;
       }
       .flex{
-        display: flex;
+        display: flex !important;
       }
-      items-center{
+      .items-center{
         align-items: center;
+      }
+      .justify-space-between {
+        justify-content: space-between;
       }
       .flex-column {
         flex-direction: column;
@@ -86,6 +89,9 @@
       .mt-4 {
         margin-top: 1rem;
       }
+      .mt-8 {
+        margin-top: 2rem;
+      }
       .mx-4 {
         margin-bottom: 1rem;
         margin-top: 1rem;
@@ -95,6 +101,7 @@
       }
       pre {
         white-space: pre-line;
+        word-break: break-word;
       }
       .ui.cards>.orange.card, .ui.orange.card, .ui.orange.cards>.card {
         box-shadow: 0 0 0 1px #d4d4d5, 0 0px 3px 1px #f2711c, 0 1px 3px 0 #d4d4d5;
@@ -108,12 +115,15 @@
       .ui.celled.table tr td, .ui.celled.table tr th {
         word-break: break-all;
       }
+      .ui.list>.item.flex:after {
+        display: none;
+      }
     </style>
 </head>
 <body>
   <div class="ui fixed inverted menu">
     <div class="ui container">
-      <%= link_to 'Model Updater', root_path, class: "header item" %>
+      <%= link_to 'Editus', root_path, class: "header item" %>
       <%= link_to 'Home', root_path, class: "item" %>
       <div class="ui simple dropdown item">
         Menu <i class="dropdown icon"></i>
@@ -146,7 +156,6 @@
         $(".ui.confirmation.modal")
           .modal({
             onApprove: function () {
-              console.log($(e.currentTarget).data('method'))
               switch ($(e.currentTarget).data('method')) {
                 case 'run':
                   $("#" + $(e.currentTarget).data('method')).submit()

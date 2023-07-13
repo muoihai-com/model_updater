@@ -18,33 +18,157 @@
   <% @scripts.each do |script| %>
     <section id="<%= script.name %>">
       <h1 class="ui header"><%= script.title %></h1>
-      <div>
-        <button class="ui labeled mini icon red button confirmation" data-method="run">
+      <% if parameters(script.proxy, :up).present? %>
+        <button class="ui labeled mini icon red button parameters" data-name="<%= script.name %>">
           <i class="plus icon"></i>
           Run
         </button>
+      <% end %>
 
-        <%= form_tag run_path(id: script.name), method: :post, id: "run" do %>
-        <% end %>
+      <div class="ui parameters-<%= script.name %> small modal">
+        <div class="header">
+          <%= parameters(script.proxy, :up).present? ? "Parameters" : "Confirmation" %>
+        </div>
+        <div class="scrolling content">
+          <%= form_tag run_path(id: script.name), method: :post, id: "run-#{script.name}", class: 'ui form' do %>
+            <% parameters(script.proxy, :up).each do |key| %>
+            <div class="inline fields">
+              <div class="two wide field">
+              </div>
+              <div class="six wide field">
+                <label><%= key.to_s.capitalize  %></label>
+              </div>
+              <div class="six wide field">
+                <%= text_field_tag "parameters[#{key}]", nil %>
+              </div>
+            </div>
+            <% end %>
+          <% end %>
+
+          <p class="<%= parameters(script.proxy, :up).present? ? "mt-8" : "" %>">
+            These changes may cause data errors, do you still want to continue?
+          </p>
+        </div>
+        <div class="actions">
+          <div class="ui cancel button">Cancel</div>
+          <div class="ui red ok button">OK</div>
+        </div>
       </div>
       <div class="ui accordion">
         <div class="title">
           <i class="dropdown icon"></i>
-          Up
+          Content
         </div>
         <div class="content">
           <div class="transition hidden">
-            <div class="editor"><%= script.up %></div>
+            <div class="editor"><%= script.content %></div>
           </div>
         </div>
-        <div class="title">
-          <i class="dropdown icon"></i>
-          Down
-        </div>
-        <div class="content">
-          <div class="editor"><%= script.down %></div>
-        </div>
+
+        <% if script.queries.present? %>
+          <div class="title">
+            <i class="dropdown icon"></i>
+            Queries
+          </div>
+          <div class="content">
+            <div class="transition hidden">
+              <div class="ui middle aligned selection list">
+                <% script.queries.each_with_index do |query, index| %>
+                  <% query_key = "#{script.name}-#{index}" %>
+
+                  <div class="item flex items-center justify-space-between query" data-index="<%= query_key %>">
+                    <div class="content">
+                      <%= query[:description] %>
+                    </div>
+                    <div class="content">
+                      <div class="ui mini icon primary button">
+                        <i class="terminal icon"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="ui query_<%= query_key %> small modal">
+                    <div class="header">
+                      Query
+                    </div>
+                    <div class="scrolling content">
+                      <%= form_tag query_path(id: script.name, method: query[:query_name]), method: :post, id: "query_form_#{query_key}", class: 'ui form' do %>
+                        <% parameters(script.proxy, query[:query_name]).each do |key| %>
+                          <div class="inline fields">
+                            <div class="two wide field">
+                            </div>
+                            <div class="six wide field">
+                              <label><%= key.to_s.capitalize %></label>
+                            </div>
+                            <div class="six wide field">
+                              <%= text_field_tag "parameters[#{key}]", nil %>
+                            </div>
+                          </div>
+                        <% end %>
+                      <% end %>
+
+                      <p class="<%= parameters(script.proxy, query[:query_name]).present? ? "mt-8" : "" %>">
+                        These changes may cause data errors, do you still want to continue?
+                      </p>
+
+                      <button class="ui button primary" id="run_query_<%= query_key %>">
+                        Query
+                      </button>
+
+                      <pre class="bg-neutral-300 rounded p-4" id="pre_query_<%= query_key %>" style="display: none;">
+                      </pre>
+                    </div>
+                    <div class="actions">
+                      <div class="ui cancel button">Close</div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </section>
     <div class="ui divider"></div>
   <% end %>
 </div>
+
+<script>
+  $("button.parameters").on("click", function (e) {
+    const name = $(e.currentTarget).data('name')
+
+    $(`.ui.parameters-${name}.modal`)
+      .modal({
+        onApprove: function () {
+          $(`#run-${name}`).submit()
+        }
+      })
+      .modal("show");
+  });
+
+  $(".query").on("click", function (e) {
+    const index = $(e.currentTarget).data('index')
+
+    $(`.ui.query_${index}.modal`).modal("show");
+    $(`#run_query_${index}`).on("click", function() {
+      const formId = `#query_form_${index}`
+      const preId = `#pre_query_${index}`
+      const serializeArray = $(formId).serializeArray()
+      const action = $(formId).attr("action")
+
+      $.post(action, $(formId).serialize()).done(function(res) {
+        if (res.status) {
+          $(preId).text(JSON.stringify(res.data))
+        } else {
+          $(preId).text(`Query Error: ${res.error}`)
+        }
+
+        $(preId).show()
+      });
+    })
+  });
+
+  $('form input').on('keypress', function(e) {
+    return e.which !== 13;
+  });
+</script>

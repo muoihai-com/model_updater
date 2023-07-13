@@ -53,10 +53,24 @@ module Editus
       action.user = request_account
       action.model_id = script.name
       action.model_name = script.title
-      action.changes = script.proxy.up if script.proxy.respond_to?(:up)
+      action.changes = script.proxy.up(*parameters) if script.proxy.respond_to?(:up)
       action.save
 
       redirect_to root_path
+    end
+
+    def query
+      script = Editus::Script.all[params[:id].to_sym]
+      method = params[:method].to_sym
+      return render json: {status: false, error: :script_not_found}, status: 200 if script.blank?
+
+      unless script.proxy.respond_to?(method)
+        return render json: {status: false, error: :undefined_method},
+                      status: 200
+      end
+
+      result = script.proxy.try(method, *parameters)
+      render json: {status: true, data: result}, status: 200
     end
 
     def undo
@@ -116,6 +130,10 @@ module Editus
     def user_params
       params[:user]&.each{|key, _| params[:user].delete(key) if params[:user][key].blank?}
       (params[:user] || {}).as_json
+    end
+
+    def parameters
+      params[:parameters]&.values || []
     end
   end
 end

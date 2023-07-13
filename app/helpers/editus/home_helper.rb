@@ -14,5 +14,13 @@ module Editus
         text_field_tag(*args)
       end
     end
+
+    def parameters proxy, method
+      return [] unless proxy.respond_to?(method)
+
+      proxy.method(method).parameters.filter_map do |(type, value)|
+        value if type.in?(%i[req opt])
+      end
+    end
   end
 end
