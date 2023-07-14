@@ -93,12 +93,12 @@ Example:
 ```rb
 Editus::Script.define :update_nick_name_user do
   title "Update nick_name of user"
-  task :up do |id, nick_name|
+  task :up do |id, new_nick_name|
     user = User.find(id)
-    nick_name = user.nick_name
-    user.update_columns nick_name: "editus"
+    old_nick_name = user.nick_name
+    user.update_columns nick_name: new_nick_name
 
-    [id, nick_name]
+    [id, old_nick_name]
   end
 
   task :down do |id, nick_name|
