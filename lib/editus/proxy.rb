@@ -29,7 +29,7 @@ module Editus
       info = Editus::Cop.instance.info(klass)
       all = cols
       exclude_fields = info[:exclude_fields] || []
-      fields = info[:fields] ? (all & info[:fields]) : all
+      fields = info[:fields].present? ? (all & info[:fields]) : all
 
       fields - %w[id] - exclude_fields
     end
@@ -53,6 +53,10 @@ module Editus
       raise Editus::UpdateFieldError if (update_fields - proxied_columns).present?
 
       klass.update_columns attributes
+    end
+
+    def type_of_col column
+      klass.class.columns_hash[column.to_s]&.type
     end
 
     private

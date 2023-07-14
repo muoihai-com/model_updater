@@ -33,9 +33,9 @@ module Editus
       return nil if model.blank?
       return nil unless model.is_a?(String) || model.is_a?(Hash)
 
-      name = model.is_a?(String) ? model : model["name"]
-      fields = model.is_a?(Hash) ? model["fields"] : []
-      exclude_fields = model.is_a?(Hash) ? model["exclude_fields"] : []
+      name = model.is_a?(String) ? model : model[:name]
+      fields = model.is_a?(Hash) ? model[:fields] : []
+      exclude_fields = model.is_a?(Hash) ? model[:exclude_fields] : []
 
       {name: name, fields: fields, exclude_fields: exclude_fields}
     end
