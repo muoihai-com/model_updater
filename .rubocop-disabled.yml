@@ -22,6 +22,12 @@ Style/MutableConstant:
 Style/Lambda:
   Enabled: false
 
+Style/HashSyntax:
+  Enabled: false
+
+Style/HashAsLastArrayItem:
+  Enabled: false
+
 Rails/ReflectionClassName:
   Enabled: false
 

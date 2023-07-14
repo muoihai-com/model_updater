@@ -1,7 +1,0 @@
----
-models:
-- Admin
-- name: User
-  fields:
-  - name
-  - age

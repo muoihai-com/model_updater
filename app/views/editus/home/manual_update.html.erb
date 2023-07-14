@@ -2,7 +2,7 @@
   <h1 class="ui header">Models</h1>
 </div>
 
-<%= form_tag validate_path, class: 'ui form warning' do %>
+<%= form_tag validate_path, class: 'ui form warning manual' do %>
   <div class="ui mt-4 text container">
     <p>
       <%= select_tag "klass", options_for_select(@model_names.sort, params[:klass]), prompt: "Select a model", id: 'select-klass' %>
