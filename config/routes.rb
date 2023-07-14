@@ -5,7 +5,7 @@ Editus::Engine.routes.draw do
   get "scripts", to: "home#scripts"
   post "/update", to: "home#update", as: :update
   post "validate", to: "home#validate", as: :validate
-
   post "scripts/:id/run", to: "home#run_script", as: :run
   post "undo/:id", to: "home#undo", as: :undo
+  post "query/:id/:method", to: "home#query", as: :query
 end

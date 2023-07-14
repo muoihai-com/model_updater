@@ -21,10 +21,16 @@ module Editus
         @scripts[name.to_sym] || @scripts[name.to_sym] = new(name.to_sym)
       end
 
-      attr_accessor :name, :title, :path, :proxy, :content
+      attr_accessor :name, :path, :proxy, :content, :queries
+      attr_writer :title
 
       def initialize name = nil
         @name = name
+        @queries = []
+      end
+
+      def add_query desc, name
+        @queries.push({description: desc, query_name: name})
       end
 
       def up
@@ -33,6 +39,10 @@ module Editus
 
       def down
         content[/task\s.*down.*do.*\n[\s\S]*?\n\s*end/]
+      end
+
+      def title
+        @title || @name.to_s.humanize
       end
     end
 
@@ -45,6 +55,7 @@ module Editus
 
       def initialize name
         @name = name
+        @query_index = 0
       end
 
       def task method, &block
@@ -58,6 +69,31 @@ module Editus
       def title txt
         internal = Internal.find_or_create @name
         internal.title = txt
+      end
+
+      def desc description
+        @description = if description.blank? || !description.is_a?(String)
+          @query_index += 1
+          "Query##{@query_index}"
+        else
+          description
+        end
+      end
+
+      def query method, &block
+        internal = Internal.find_or_create @name
+        internal.proxy ||= Editus::DefinitionProxy.new(@name)
+        query_name = "query_#{method}"
+        internal.proxy.define_singleton_method(query_name, &block)
+        add_query_to_internal internal, query_name
+      end
+
+      private
+
+      def add_query_to_internal internal, query_name
+        description = desc(@description)
+        internal.add_query description, query_name
+        @description = nil
       end
     end
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    editus (1.0.0)
+    editus (1.1.0)
       rails (>= 5.0)
 
 GEM

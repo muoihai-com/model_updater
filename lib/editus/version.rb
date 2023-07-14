@@ -1,5 +1,5 @@
 module Editus
-  VERSION = "1.0.0"
+  VERSION = "1.1.0"
   SUMMARY = "This application is a simple web interface integrated with an existing Ruby on Rails application. It allows users to directly edit models, run predefined scripts, and easily undo changes."
   DESCRIPTION = <<~DOC
     This application is a user-friendly web interface designed to work with a Ruby on Rails application. With a simple and intuitive web interface, users can conveniently access the features of the application.
