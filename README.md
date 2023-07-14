@@ -7,18 +7,20 @@ Streamline your coding and database editing processes with Editus. Its intuitive
 # Table of contents
 
 - [Editus](#editus)
-  * [Installation](#installation)
-  * [Usage](#usage)
-    + [Authentication](#authentication)
-    + [Models](#models)
-    + [Add Script](#add-script)
-  * [Contributing](#contributing)
-  * [License](#license)
+- [Table of contents](#table-of-contents)
+- [Installation](#installation)
+- [Usage](#usage)
+  * [Authentication](#authentication)
+  * [Models](#models)
+  * [Add Script](#add-script)
+    + [Query](#query)
+- [Contributing](#contributing)
+- [License](#license)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
-## Installation
+# Installation
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -45,9 +47,9 @@ Rails.application.routes.draw do
 end
 ```
 
-## Usage
+# Usage
 
-### Authentication
+## Authentication
 
 Editus supports two forms of authentication:
 
@@ -69,7 +71,7 @@ config.auth = [%w[user@example.com Pass@123456], %w[manager@example.com Pass@123
 
 Use one of the above authentication methods to secure access to Editus. Note that the `editus_account` method will take precedence if both methods are provided.
 
-### Models
+## Models
 
 Display a simple form interface that helps you update the fields of the selected model. The update will use `update_columns` so will ignore callback and validate
 
@@ -81,7 +83,7 @@ config.models = ["User", {name: "Admin", fields: %w[name], exclude_fields: %w[id
 
 For the `Admin` model specified using the fields key. Additionally, the exclude_fields key is used to exclude the `id` field from being displayed.
 
-### Add Script
+## Add Script
 
 To execute existing code create a directory `config/editus` in your code
 
@@ -91,12 +93,12 @@ Example:
 ```rb
 Editus::Script.define :update_nick_name_user do
   title "Update nick_name of user"
-  task :up do
-    user = User.find(1)
+  task :up do |id, nick_name|
+    user = User.find(id)
     nick_name = user.nick_name
     user.update_columns nick_name: "editus"
 
-    [1, nick_name]
+    [id, nick_name]
   end
 
   task :down do |id, nick_name|
@@ -110,10 +112,23 @@ Make sure the filename and the defined name are the same. In the above code `tit
 `task :up` is the code that will be executed when you run it.
 `task :down` is the code that will be executed when you undo, if you don't need to undo you can skip it.
 
-It can use the result returned from the `up` function to use as an input parameter
+It can use the result returned from the `up` method to use as an input parameter. The `up` method can also accept parameters directly.
 
-## Contributing
+### Query
+
+In addition to running the two tasks `up` and `down`, you can perform other small code snippets by using `query`.
+
+```rb
+Editus::Script.define :users do
+  desc "Number of users"
+  query :count_user do
+    User.count
+  end
+end
+```
+
+# Contributing
 Contribution directions go here.
 
-## License
+# License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
